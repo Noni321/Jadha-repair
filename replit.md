@@ -67,6 +67,32 @@ Preferred communication style: Simple, everyday language.
 
 **Cultural Appropriateness**: RTL layout with Arabic-optimized typography and design patterns familiar to Middle Eastern users.
 
+### Page Sections
+
+The landing page includes the following sections in order:
+
+1. **Header** - Sticky header with logo, phone number, and navigation
+2. **Hero Section** - Full-width background image with main CTA and value proposition
+3. **Features Grid** - 4 trust-building features (same-day service, warranty, certified technicians, all brands)
+4. **Services Checklist** - List of specific repair services offered
+5. **Animated Counters** - Statistics with scroll-triggered animation (10+ years, 5000+ customers, 15000+ repairs)
+6. **Brands Showcase** - Grid of supported washing machine brands (Samsung, LG, Bosch, Siemens, etc.)
+7. **Customer Testimonials** - 3 customer reviews with star ratings and locations
+8. **Contact Form** - Service inquiry form with React Hook Form validation and Arabic error messages
+9. **Service Area** - List of 12 Jeddah neighborhoods covered
+10. **SEO Content** - Search-optimized content section
+11. **Footer** - Contact info, quick links, and copyright
+
+### Interactive Features
+
+**Animated Counters**: Uses IntersectionObserver with requestAnimationFrame for smooth scroll-triggered animation. Unobserves after first trigger to prevent reset on re-scroll.
+
+**Contact Form**: React Hook Form with Zod validation and Arabic validation messages. Fields include name (min 2 chars), phone (min 10 chars), and message (min 10 chars). Displays success toast on submission with duplicate submission guard.
+
+**Floating WhatsApp Button**: Fixed bottom-right green button linking to WhatsApp with pre-filled Arabic message template (wa.me/966554276643).
+
+**Floating Call Button**: Mobile-only fixed bottom-left button for direct phone calls.
+
 ## External Dependencies
 
 ### Third-Party Services

@@ -43,8 +43,8 @@
   --chart-3: 180 65% 35%;
   --chart-4: 165 60% 32%;
   --chart-5: 150 55% 30%;
-  --font-sans: 'Tajawal', 'Cairo', sans-serif;
-  --font-serif: Georgia, serif;
+  --font-sans: 'Tajawal', 'Noto Sans Arabic', 'Cairo', sans-serif;
+  --font-serif: 'Amiri', Georgia, serif;
   --font-mono: Menlo, monospace;
   --radius: .5rem;
   --shadow-2xs: 0px 2px 0px 0px hsl(220 8% 15% / 0.02);

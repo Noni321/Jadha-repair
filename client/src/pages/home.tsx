@@ -10,7 +10,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import { Phone, Shield, Clock, CheckCircle, Wrench, Droplets, Volume2, Lock, Vibrate, RotateCcw, ArrowLeft, MessageCircle, Send, Star, MapPin, Users, Award, Settings } from "lucide-react";
 
-import heroBackground from "@assets/Untitledgg-1536x637_1764788221851.png";
 import washingMachines from "@assets/Image-of-clothes-washing-machine-we-repair_1764788221827.jpg";
 import ctaGraphic from "@assets/dfg-1536x567_1764788221866.png";
 import appliancesImage from "@assets/HTB16tm3SpXXXXcLXVXXq6xXFXXXJ_1764788221879.jpg";
@@ -69,11 +68,7 @@ function HeroSection() {
       className="relative min-h-[90vh] flex items-center justify-center"
       data-testid="section-hero"
     >
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroBackground})` }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/60 to-primary/80" />
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400" />
       
       <div className="relative z-10 container mx-auto px-4 py-20 text-center text-white">
         <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight" data-testid="text-hero-headline">

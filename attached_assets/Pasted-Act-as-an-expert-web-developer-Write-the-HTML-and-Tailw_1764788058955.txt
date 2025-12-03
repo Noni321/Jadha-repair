@@ -1,0 +1,34 @@
+Act as an expert web developer. Write the HTML and Tailwind CSS code for a responsive Landing Page for a Washing Machine Repair service in Jeddah. The content must be in Arabic (RTL direction).
+
+Design Requirements:
+- Clean, modern design with a sticky header containing the phone number: 0554276643.
+- Use a blue and white color palette (trustworthy style).
+- Include a "Call Now" floating button for mobile users at the bottom.
+- Ensure the font used is suitable for Arabic (like 'Tajawal' or 'Cairo').
+
+Sections to include:
+1. Header: Logo (Text: صيانة غسالات جدة) and Navigation.
+2. Hero Section: High-quality background with Headline and a large CTA button.
+3. Features: 30-day Guarantee and Same-day service.
+4. Services Checklist: List common problems.
+5. Brands Grid: Show the brands mentioned in the text.
+6. Content/SEO Area: Use the provided text for keywords.
+7. Footer: Contact info.
+
+Content to use (Copy exactly as is):
+"
+نقوم بإصلاح الأنواع التالية من مشاكل مجفف الملابس و الغسالات دورات الغسيل تترك البقع على الملابس/ الماء لا يستنزف بشكل صحيح/ الغسالات المزعجة/ الباب محشور/ الاهتزاز المفرط/ قضايا الغزل/ تسرب الماء/ و أكثر من ذلك بكثير
+
+ضمان:
+نقدم ضمان لمدة 30 يومًا. إذا حدثت نفس المشكلة مرة أخرى في غضون 30 يومًا. سنقوم بإصلاحه دون أي تكاليف إضافية.
+
+صيانة غسالات اتوماتيك جدة 0554276643
+نقوم بإصلاح الأنواع:
+صيانة مجفف ويرلبول، صيانة غسالات ميتاج، صيانة غسالات ميتاج في جدة، صيانة غسالات جدة.
+
+خدمة شاملة:
+صيانة نشافة ويرلبول جدة، صيانة نشافة ميتاج جدة، صيانة نشافة جنرال اليكتريك، صيانة نشافة اريستون جدة، صيانة نشافة ميتاج، رقم صيانة غسالات ميتاج، صيانة غسالات اتوماتيك في جدة، تصليح نشافة ملابس، صيانة نشافة سامسونج، صيانة مجفف الملابس، صيانة مجفف اريستون، تصليح مجفف الملابس، صيانة مجفف الملابس سامسونج، صيانة مجفف ميتاج، صيانة نشافة جنرال اليكتريك، تصليح مجفف ملابس، صيانة المجفف الحراري، صيانة مجفف سامسونج، صيانة مجفف ويرلبول، صيانة غسالات دايو جدة، صيانة غسالات توشيبا جدة، تصليح غسالات جدة.
+
+اتصل بنا الآن 0554276643
+اتصل بنا لإصلاح غسالتك اليوم. خدمة إصلاح وصيانة الغسالات الأوتوماتيكية في جدة. نقوم بإصلاح الغسالات الأوتوماتيكية لجميع الماركات تقريبًا. يتمتع الفني لدينا بأكثر من 10 سنوات من الخبرة. الغسالة الأوتوماتيكية مهمة جدًا في المنزل. لهذا السبب نقدم خدمة صيانة الغسالات في نفس اليوم في جدة بأكملها. نقدم أيضًا ضمان إصلاح لمدة 30 يومًا. في حالة حدوث نفس المشكلة مرة أخرى خلال فترة الضمان ، سنعود مرة أخرى وسنصلحها دون أي تكلفة إضافية.
+"

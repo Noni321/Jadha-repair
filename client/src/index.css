@@ -43,7 +43,7 @@
   --chart-3: 180 65% 35%;
   --chart-4: 165 60% 32%;
   --chart-5: 150 55% 30%;
-  --font-sans: Cairo, Tajawal, sans-serif;
+  --font-sans: 'Cairo', sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: Menlo, monospace;
   --radius: .5rem;
@@ -170,9 +170,26 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply font-sans antialiased bg-background text-foreground;
   }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(59, 130, 246, 0);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
 }
 
 /**

@@ -1,7 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Phone, Shield, Clock, CheckCircle, Wrench, Droplets, Volume2, Lock, Vibrate, RotateCcw, ArrowLeft } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
+import { Phone, Shield, Clock, CheckCircle, Wrench, Droplets, Volume2, Lock, Vibrate, RotateCcw, ArrowLeft, MessageCircle, Send, Star, MapPin, Users, Award, Settings } from "lucide-react";
 
 import heroBackground from "@assets/Untitledgg-1536x637_1764788221851.png";
 import washingMachines from "@assets/Image-of-clothes-washing-machine-we-repair_1764788221827.jpg";
@@ -10,6 +17,7 @@ import appliancesImage from "@assets/HTB16tm3SpXXXXcLXVXXq6xXFXXXJ_1764788221879
 
 const PHONE_NUMBER = "0554276643";
 const PHONE_LINK = `tel:${PHONE_NUMBER}`;
+const WHATSAPP_LINK = `https://wa.me/966${PHONE_NUMBER.slice(1)}?text=${encodeURIComponent("مرحباً، أحتاج إلى خدمة صيانة غسالة")}`;
 
 function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -391,6 +399,382 @@ function Footer() {
   );
 }
 
+const contactFormSchema = z.object({
+  name: z.string().min(2, "الاسم مطلوب (حرفين على الأقل)"),
+  phone: z.string().min(10, "رقم الهاتف غير صحيح"),
+  message: z.string().min(10, "الرسالة قصيرة جداً (10 أحرف على الأقل)"),
+});
+
+type ContactFormData = z.infer<typeof contactFormSchema>;
+
+function AnimatedCountersSection() {
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const [counts, setCounts] = useState({ years: 0, customers: 0, repairs: 0 });
+  const sectionRef = useRef<HTMLElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    if (hasAnimated) return;
+
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          if (observerRef.current && sectionRef.current) {
+            observerRef.current.unobserve(sectionRef.current);
+          }
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observerRef.current.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [hasAnimated]);
+
+  useEffect(() => {
+    if (!hasAnimated) return;
+
+    const targets = { years: 10, customers: 5000, repairs: 15000 };
+    const duration = 2000;
+    const startTime = performance.now();
+
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      const easeOutQuad = 1 - Math.pow(1 - progress, 2);
+      
+      setCounts({
+        years: Math.round(targets.years * easeOutQuad),
+        customers: Math.round(targets.customers * easeOutQuad),
+        repairs: Math.round(targets.repairs * easeOutQuad),
+      });
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setCounts(targets);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [hasAnimated]);
+
+  const stats = [
+    { icon: Award, value: counts.years, suffix: "+", label: "سنوات خبرة" },
+    { icon: Users, value: counts.customers, suffix: "+", label: "عميل سعيد" },
+    { icon: Settings, value: counts.repairs, suffix: "+", label: "عملية إصلاح" },
+  ];
+
+  return (
+    <section
+      ref={sectionRef}
+      className="py-16 md:py-20 bg-primary text-white"
+      data-testid="section-counters"
+    >
+      <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto text-center">
+          {stats.map((stat, index) => (
+            <div key={index} className="space-y-2" data-testid={`counter-stat-${index}`}>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/10 flex items-center justify-center">
+                <stat.icon className="w-8 h-8" />
+              </div>
+              <div className="text-4xl md:text-5xl font-bold" data-testid={`counter-value-${index}`}>
+                {stat.value.toLocaleString('ar-SA')}{stat.suffix}
+              </div>
+              <div className="text-lg text-white/80">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function TestimonialsSection() {
+  const testimonials = [
+    {
+      name: "أحمد محمد",
+      rating: 5,
+      text: "خدمة ممتازة وسريعة. الفني كان محترف جداً وأصلح الغسالة في نفس اليوم. أنصح الجميع بهم.",
+      location: "جدة - حي الروضة",
+    },
+    {
+      name: "سارة عبدالله",
+      rating: 5,
+      text: "تعاملت معهم مرتين والخدمة دائماً ممتازة. الأسعار معقولة والضمان يعطيك راحة بال.",
+      location: "جدة - حي النزهة",
+    },
+    {
+      name: "محمد علي",
+      rating: 5,
+      text: "أفضل خدمة صيانة غسالات في جدة. سرعة في الاستجابة وجودة عالية في العمل.",
+      location: "جدة - حي الصفا",
+    },
+  ];
+
+  return (
+    <section className="py-16 md:py-24 bg-muted/30" data-testid="section-testimonials">
+      <div className="container mx-auto px-4">
+        <h2 className="text-2xl md:text-4xl font-bold text-center mb-4 text-foreground" data-testid="text-testimonials-title">
+          آراء عملائنا
+        </h2>
+        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+          نفخر بثقة عملائنا وآرائهم الإيجابية
+        </p>
+
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {testimonials.map((testimonial, index) => (
+            <Card
+              key={index}
+              className="p-6 border-none shadow-lg"
+              data-testid={`card-testimonial-${index}`}
+            >
+              <div className="flex gap-1 mb-4">
+                {Array.from({ length: testimonial.rating }).map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+              <p className="text-muted-foreground mb-4 leading-relaxed" data-testid={`text-testimonial-${index}`}>
+                "{testimonial.text}"
+              </p>
+              <div className="border-t pt-4">
+                <div className="font-bold text-foreground">{testimonial.name}</div>
+                <div className="text-sm text-muted-foreground flex items-center gap-1">
+                  <MapPin className="w-3 h-3" />
+                  {testimonial.location}
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ContactFormSection() {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      name: "",
+      phone: "",
+      message: "",
+    },
+  });
+
+  const onSubmit = async (data: ContactFormData) => {
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
+    
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "تم إرسال رسالتك بنجاح!",
+        description: "سنتواصل معك قريباً إن شاء الله.",
+      });
+      
+      form.reset();
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <section className="py-16 md:py-24 bg-background" data-testid="section-contact-form">
+      <div className="container mx-auto px-4">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-2xl md:text-4xl font-bold text-center mb-4 text-foreground" data-testid="text-contact-title">
+            اطلب خدمة الصيانة
+          </h2>
+          <p className="text-center text-muted-foreground mb-8">
+            أرسل لنا رسالتك وسنتواصل معك في أقرب وقت
+          </p>
+
+          <Card className="p-6 md:p-8 border-none shadow-lg">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>الاسم</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="أدخل اسمك الكريم"
+                          {...field}
+                          data-testid="input-name"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>رقم الهاتف</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="05XXXXXXXX"
+                          dir="ltr"
+                          className="text-left"
+                          {...field}
+                          data-testid="input-phone"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>تفاصيل المشكلة</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="صف لنا مشكلة الغسالة..."
+                          className="min-h-[120px] resize-none"
+                          {...field}
+                          data-testid="input-message"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full"
+                  disabled={isSubmitting}
+                  data-testid="button-submit-form"
+                >
+                  {isSubmitting ? (
+                    "جاري الإرسال..."
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5 ml-2" />
+                      إرسال الطلب
+                    </>
+                  )}
+                </Button>
+              </form>
+            </Form>
+          </Card>
+
+          <div className="mt-8 text-center">
+            <p className="text-muted-foreground mb-4">أو تواصل معنا مباشرة:</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button asChild variant="outline" size="lg" data-testid="button-call-form">
+                <a href={PHONE_LINK} className="flex items-center gap-2">
+                  <Phone className="w-5 h-5" />
+                  <span dir="ltr">{PHONE_NUMBER}</span>
+                </a>
+              </Button>
+              <Button asChild size="lg" className="bg-green-600 hover:bg-green-700" data-testid="button-whatsapp-form">
+                <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                  <MessageCircle className="w-5 h-5" />
+                  واتساب
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ServiceAreaSection() {
+  const areas = [
+    "حي الروضة",
+    "حي النزهة",
+    "حي الصفا",
+    "حي الحمراء",
+    "حي السلامة",
+    "حي الرحاب",
+    "حي المحمدية",
+    "حي البساتين",
+    "حي الشرفية",
+    "حي الأندلس",
+    "حي الفيصلية",
+    "حي السليمانية",
+  ];
+
+  return (
+    <section className="py-16 md:py-24 bg-muted/30" data-testid="section-service-area">
+      <div className="container mx-auto px-4">
+        <h2 className="text-2xl md:text-4xl font-bold text-center mb-4 text-foreground" data-testid="text-service-area-title">
+          مناطق الخدمة
+        </h2>
+        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+          نغطي جميع أحياء جدة وضواحيها
+        </p>
+
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-card rounded-xl shadow-lg p-8 border border-card-border">
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <MapPin className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-foreground">
+                جدة - المملكة العربية السعودية
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {areas.map((area, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg"
+                  data-testid={`area-item-${index}`}
+                >
+                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+                  <span className="text-foreground text-sm">{area}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 text-center">
+              <p className="text-muted-foreground">
+                لا ترى منطقتك؟ اتصل بنا للتأكد من تغطية منطقتك
+              </p>
+              <Button asChild className="mt-4" data-testid="button-call-service-area">
+                <a href={PHONE_LINK} className="flex items-center gap-2">
+                  <Phone className="w-5 h-5" />
+                  <span dir="ltr">{PHONE_NUMBER}</span>
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FinalCTASection() {
   return (
     <section className="py-16 md:py-20 bg-gradient-to-l from-primary to-blue-600" data-testid="section-final-cta">
@@ -431,21 +815,41 @@ function FloatingCallButton() {
   );
 }
 
+function FloatingWhatsAppButton() {
+  return (
+    <a
+      href={WHATSAPP_LINK}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 hover:scale-105 transition-all"
+      data-testid="button-floating-whatsapp"
+    >
+      <MessageCircle className="w-7 h-7" />
+      <span className="hidden sm:inline font-bold">واتساب</span>
+    </a>
+  );
+}
+
 export default function Home() {
   return (
     <div className="min-h-screen" dir="rtl">
       <Header />
       <main>
         <HeroSection />
+        <AnimatedCountersSection />
         <FeaturesSection />
         <ServicesSection />
         <CTASection />
         <BrandsSection />
+        <TestimonialsSection />
+        <ContactFormSection />
+        <ServiceAreaSection />
         <SEOContentSection />
         <FinalCTASection />
       </main>
       <Footer />
       <FloatingCallButton />
+      <FloatingWhatsAppButton />
     </div>
   );
 }

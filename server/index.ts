@@ -22,6 +22,12 @@ app.use(
 
 app.use(express.urlencoded({ extended: false }));
 
+// Set proper MIME types
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  next();
+});
+
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
     hour: "numeric",

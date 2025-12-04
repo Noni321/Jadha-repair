@@ -11,13 +11,24 @@ export function serveStatic(app: Express) {
     );
   }
 
+  // Serve static files with proper MIME types
   app.use(express.static(distPath, {
     index: 'index.html',
-    extensions: ['html']
+    extensions: ['html'],
+    setHeaders: (res, filepath) => {
+      if (filepath.endsWith('.html')) {
+        res.setHeader('Content-Type', 'text/html');
+      } else if (filepath.endsWith('.js')) {
+        res.setHeader('Content-Type', 'application/javascript');
+      } else if (filepath.endsWith('.css')) {
+        res.setHeader('Content-Type', 'text/css');
+      }
+    }
   }));
 
-  // Fallback to index.html for client-side routing
+  // Fallback to index.html for client-side routing (SPA)
   app.get('*', (_req, res) => {
+    res.setHeader('Content-Type', 'text/html');
     res.sendFile(path.join(distPath, 'index.html'));
   });
 }

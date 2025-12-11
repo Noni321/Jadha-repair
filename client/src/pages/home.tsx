@@ -8,11 +8,25 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Phone, Shield, Clock, CheckCircle, Wrench, Droplets, Volume2, Lock, Vibrate, RotateCcw, ArrowLeft, MessageCircle, Send, Star, MapPin, Users, Award, Settings } from "lucide-react";
+import { SiWhatsapp } from "react-icons/si";
 
 import washingMachines from "@assets/Image-of-clothes-washing-machine-we-repair_1764788221827.jpg";
 import ctaGraphic from "@assets/dfg-1536x567_1764788221866.png";
 import appliancesImage from "@assets/HTB16tm3SpXXXXcLXVXXq6xXFXXXJ_1764788221879.jpg";
+
+const heroPic1 = "/pic/1765212174451.jpg";
+const heroPic2 = "/pic/1765212441179.jpg";
+const heroPic3 = "/pic/1765212643302.jpg";
+const heroPic4 = "/pic/1765212863974.jpg";
+const heroPic5 = "/pic/1765213419606.jpg";
+
+const samsungLogo = "/brand/Samsung.svg";
+const lgLogo = "/brand/LG.svg";
+const toshibaLogo = "/brand/Toshiba.svg";
+const daewooLogo = "/brand/Daewoo.svg";
+const superGeneralLogo = "/brand/Super-General.svg";
 
 const PHONE_NUMBER = "0554276643";
 const PHONE_LINK = `tel:${PHONE_NUMBER}`;
@@ -33,59 +47,86 @@ function Header() {
     <header
       className={`fixed top-0 right-0 left-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/95 backdrop-blur-sm shadow-md"
-          : "bg-transparent"
+          ? "bg-background/95 backdrop-blur-sm shadow-md border-b border-primary/20"
+          : "bg-black/30 backdrop-blur-sm"
       }`}
       data-testid="header"
     >
       <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
         <h1
           className={`text-xl md:text-2xl font-bold transition-colors ${
-            isScrolled ? "text-primary" : "text-white"
+            isScrolled ? "text-primary" : "text-primary"
           }`}
           data-testid="text-logo"
         >
           صيانة غسالات جدة
         </h1>
-        <a
-          href={PHONE_LINK}
-          className={`flex items-center gap-2 text-lg md:text-xl font-bold transition-colors ${
-            isScrolled ? "text-primary" : "text-white"
-          }`}
-          data-testid="link-phone-header"
-        >
-          <Phone className="w-5 h-5" />
-          <span dir="ltr">{PHONE_NUMBER}</span>
-        </a>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <a
+            href={PHONE_LINK}
+            className={`flex items-center gap-2 text-lg md:text-xl font-bold transition-colors ${
+              isScrolled ? "text-primary" : "text-primary"
+            }`}
+            data-testid="link-phone-header"
+          >
+            <Phone className="w-5 h-5" />
+            <span dir="ltr">{PHONE_NUMBER}</span>
+          </a>
+        </div>
       </div>
     </header>
   );
 }
 
 function HeroSection() {
+  const heroImages = [heroPic1, heroPic2, heroPic3, heroPic4, heroPic5];
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
+
   return (
     <section
       className="relative min-h-[90vh] flex items-center justify-center"
       data-testid="section-hero"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400" />
+      {heroImages.map((img, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === currentImage ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <img
+            src={img}
+            alt={`صيانة غسالات ${index + 1}`}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ))}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
       
       <div className="relative z-10 container mx-auto px-4 py-20 text-center text-white">
-        <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight" data-testid="text-hero-headline">
-          صيانة غسالات اتوماتيك جدة
+        <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-primary drop-shadow-lg" data-testid="text-hero-headline">
+          مركز فني صيانة غسالات بجدة
         </h2>
-        <p className="text-xl md:text-2xl mb-4 opacity-90" data-testid="text-hero-subheadline">
-          اتصل بنا لإصلاح غسالتك اليوم!
-        </p>
-        <p className="text-lg md:text-xl mb-8 opacity-80 max-w-2xl mx-auto">
-          خدمة إصلاح وصيانة الغسالات الأوتوماتيكية في جدة. نقوم بإصلاح الغسالات الأوتوماتيكية لجميع الماركات تقريباً.
+        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 text-white drop-shadow-md" data-testid="text-hero-subheadline">
+          صيانة غسالات اتوماتيك جدة
+        </h3>
+        <p className="text-lg md:text-xl mb-8 opacity-95 max-w-3xl mx-auto leading-relaxed">
+          لا تدع الغسالة المعطلة تعرقل روتين غسيلك. يقدم فريق الفنيين الخبراء لدينا خدمة سريعة وفعالة، مع إمكانية توفر الخدمة في نفس اليوم في معظم الحالات. نحن نقوم بإصلاح جميع العلامات التجارية والموديلات الرئيسية تقريبًا، مما يضمن لك العودة بسرعة إلى تجربة تنظيف الملابس بسهولة. حدد موعدك اليوم وودّع مشاكل الغسيل إلى الأبد!
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Button
             size="lg"
             asChild
-            className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6 font-bold shadow-xl"
+            className="bg-primary text-primary-foreground text-lg px-8 py-6 font-bold shadow-xl"
             data-testid="button-hero-cta"
           >
             <a href={PHONE_LINK} className="flex items-center gap-3">
@@ -94,26 +135,75 @@ function HeroSection() {
               <span dir="ltr">{PHONE_NUMBER}</span>
             </a>
           </Button>
+          <Button
+            size="lg"
+            asChild
+            className="bg-green-600 text-white text-lg px-8 py-6 font-bold shadow-xl"
+            data-testid="button-hero-whatsapp"
+          >
+            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3">
+              <SiWhatsapp className="w-6 h-6" />
+              <span>واتساب</span>
+            </a>
+          </Button>
         </div>
         
         <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm md:text-base">
-          <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-            <Shield className="w-5 h-5 text-green-300" />
+          <div className="flex items-center gap-2 bg-primary/20 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/30">
+            <Shield className="w-5 h-5 text-primary" />
             <span>ضمان 30 يوم</span>
           </div>
-          <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-            <Clock className="w-5 h-5 text-yellow-300" />
+          <div className="flex items-center gap-2 bg-primary/20 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/30">
+            <Clock className="w-5 h-5 text-primary" />
             <span>خدمة في نفس اليوم</span>
           </div>
-          <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-            <Wrench className="w-5 h-5 text-blue-300" />
+          <div className="flex items-center gap-2 bg-primary/20 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/30">
+            <Wrench className="w-5 h-5 text-primary" />
             <span>+10 سنوات خبرة</span>
           </div>
         </div>
       </div>
       
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <ArrowLeft className="w-8 h-8 text-white rotate-[-90deg]" />
+        <ArrowLeft className="w-8 h-8 text-primary rotate-[-90deg]" />
+      </div>
+    </section>
+  );
+}
+
+function BrandLogosSection() {
+  const brands = [
+    { name: "Samsung", logo: samsungLogo },
+    { name: "LG", logo: lgLogo },
+    { name: "Toshiba", logo: toshibaLogo },
+    { name: "Daewoo", logo: daewooLogo },
+    { name: "Super General", logo: superGeneralLogo },
+  ];
+
+  const duplicatedBrands = [...brands, ...brands, ...brands, ...brands];
+
+  return (
+    <section className="py-8 bg-card border-y border-border overflow-hidden" data-testid="section-brand-logos">
+      <div className="container mx-auto px-4 mb-4">
+        <h3 className="text-center text-lg font-bold text-muted-foreground">نصلح جميع الماركات</h3>
+      </div>
+      <div className="brand-scroll-container overflow-hidden">
+        <div className="flex animate-scroll-rtl" style={{ width: "fit-content" }}>
+          {duplicatedBrands.map((brand, index) => (
+            <div
+              key={index}
+              className="flex-shrink-0 mx-8 flex items-center justify-center"
+              data-testid={`brand-logo-${index}`}
+            >
+              <img
+                src={brand.logo}
+                alt={brand.name}
+                className="h-12 md:h-16 w-auto object-contain grayscale opacity-70 transition-all duration-300"
+                style={{ filter: "grayscale(100%) brightness(0.7) contrast(1.2)" }}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -125,15 +215,15 @@ function FeaturesSection() {
       icon: Shield,
       title: "ضمان 30 يوم",
       description: "نقدم ضمان لمدة 30 يومًا. إذا حدثت نفس المشكلة مرة أخرى في غضون 30 يومًا. سنقوم بإصلاحه دون أي تكاليف إضافية.",
-      color: "text-green-600",
-      bgColor: "bg-green-50",
+      color: "text-primary",
+      bgColor: "bg-primary/10",
     },
     {
       icon: Clock,
       title: "خدمة في نفس اليوم",
       description: "نحن نفهم أهمية الغسالة في منزلك. لذلك نقدم خدمة سريعة في نفس اليوم لإصلاح غسالتك.",
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
+      color: "text-primary",
+      bgColor: "bg-primary/10",
     },
   ];
 
@@ -206,7 +296,7 @@ function ServicesSection() {
 
 function CTASection() {
   return (
-    <section className="py-12 md:py-16 bg-primary" data-testid="section-cta-mid">
+    <section className="py-12 md:py-16 bg-gradient-to-r from-black to-gray-900" data-testid="section-cta-mid">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-center gap-8">
           <img
@@ -216,13 +306,13 @@ function CTASection() {
             data-testid="img-cta-graphic"
           />
           <div className="text-center md:text-right">
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            <h3 className="text-2xl md:text-3xl font-bold text-primary mb-4">
               اتصل بنا الآن
             </h3>
             <Button
               size="lg"
               asChild
-              className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6 font-bold"
+              className="bg-primary text-primary-foreground text-lg px-8 py-6 font-bold"
               data-testid="button-cta-mid"
             >
               <a href={PHONE_LINK} className="flex items-center gap-3">
@@ -278,7 +368,7 @@ function BrandsSection() {
           {brands.map((brand, index) => (
             <div
               key={index}
-              className="px-6 py-3 bg-card rounded-lg border border-card-border shadow-sm font-medium text-foreground"
+              className="px-6 py-3 bg-card rounded-lg border border-primary/20 shadow-sm font-medium text-foreground"
               data-testid={`badge-brand-${index}`}
             >
               {brand}
@@ -312,35 +402,35 @@ function SEOContentSection() {
               <h3 className="text-xl font-bold mb-4 text-foreground">خدماتنا تشمل:</h3>
               <ul className="list-none space-y-2 text-muted-foreground">
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
                   <span>صيانة مجفف ويرلبول</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
                   <span>صيانة غسالات ميتاج في جدة</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
                   <span>صيانة نشافة ويرلبول جدة</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
                   <span>صيانة نشافة جنرال اليكتريك</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
                   <span>صيانة نشافة اريستون جدة</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
                   <span>صيانة نشافة سامسونج</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
                   <span>صيانة مجفف الملابس</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
                   <span>تصليح نشافة ملابس</span>
                 </li>
               </ul>
@@ -354,53 +444,45 @@ function SEOContentSection() {
 
 function Footer() {
   return (
-    <footer className="bg-foreground text-background py-12" data-testid="footer">
+    <footer className="bg-black text-white py-12 pb-28" data-testid="footer">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-3 gap-8 text-center md:text-right">
           <div>
-            <h3 className="text-xl font-bold mb-4">صيانة غسالات جدة</h3>
-            <p className="text-background/70 leading-relaxed">
+            <h3 className="text-xl font-bold mb-4 text-primary">صيانة غسالات جدة</h3>
+            <p className="text-white/70 leading-relaxed">
               خدمة إصلاح وصيانة الغسالات الأوتوماتيكية في جدة. نقوم بإصلاح جميع الماركات مع ضمان 30 يوم.
             </p>
           </div>
           
           <div>
-            <h3 className="text-xl font-bold mb-4">اتصل بنا</h3>
+            <h3 className="text-xl font-bold mb-4 text-primary">اتصل بنا</h3>
             <a
               href={PHONE_LINK}
-              className="inline-flex items-center gap-2 text-2xl font-bold text-background hover:text-primary-foreground transition-colors"
+              className="inline-flex items-center gap-2 text-2xl font-bold text-primary transition-colors"
               data-testid="link-phone-footer"
             >
               <Phone className="w-6 h-6" />
               <span dir="ltr">{PHONE_NUMBER}</span>
             </a>
-            <p className="text-background/70 mt-2">متاح 7 أيام في الأسبوع</p>
+            <p className="text-white/70 mt-2">متاح 7 أيام في الأسبوع</p>
           </div>
           
           <div>
-            <h3 className="text-xl font-bold mb-4">منطقة الخدمة</h3>
-            <p className="text-background/70">جدة وضواحيها</p>
-            <p className="text-background/70 mt-2">خدمة في نفس اليوم</p>
+            <h3 className="text-xl font-bold mb-4 text-primary">منطقة الخدمة</h3>
+            <p className="text-white/70">جدة وضواحيها</p>
+            <p className="text-white/70 mt-2">خدمة في نفس اليوم</p>
           </div>
         </div>
         
-        <div className="border-t border-background/20 mt-8 pt-8 text-center">
-          <p className="text-background/60">
-            © {new Date().getFullYear()} صيانة غسالات جدة - جميع الحقوق محفوظة
+        <div className="border-t border-white/20 mt-8 pt-8 text-center">
+          <p className="text-white/60">
+            &copy; {new Date().getFullYear()} صيانة غسالات جدة - جميع الحقوق محفوظة
           </p>
         </div>
       </div>
     </footer>
   );
 }
-
-const contactFormSchema = z.object({
-  name: z.string().min(2, "الاسم مطلوب (حرفين على الأقل)"),
-  phone: z.string().min(10, "رقم الهاتف غير صحيح"),
-  message: z.string().min(10, "الرسالة قصيرة جداً (10 أحرف على الأقل)"),
-});
-
-type ContactFormData = z.infer<typeof contactFormSchema>;
 
 function AnimatedCountersSection() {
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -472,17 +554,17 @@ function AnimatedCountersSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-16 md:py-20 bg-primary text-white"
+      className="py-16 md:py-20 bg-gradient-to-r from-black to-gray-900 text-white"
       data-testid="section-counters"
     >
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto text-center">
           {stats.map((stat, index) => (
             <div key={index} className="space-y-2" data-testid={`counter-stat-${index}`}>
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/10 flex items-center justify-center">
-                <stat.icon className="w-8 h-8" />
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
+                <stat.icon className="w-8 h-8 text-primary" />
               </div>
-              <div className="text-4xl md:text-5xl font-bold" data-testid={`counter-value-${index}`}>
+              <div className="text-4xl md:text-5xl font-bold text-primary" data-testid={`counter-value-${index}`}>
                 {stat.value.toLocaleString('ar-SA')}{stat.suffix}
               </div>
               <div className="text-lg text-white/80">{stat.label}</div>
@@ -535,7 +617,7 @@ function TestimonialsSection() {
             >
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                  <Star key={i} className="w-5 h-5 fill-primary text-primary" />
                 ))}
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed" data-testid={`text-testimonial-${index}`}>
@@ -556,6 +638,14 @@ function TestimonialsSection() {
   );
 }
 
+const contactFormSchema = z.object({
+  name: z.string().min(2, "الاسم مطلوب (حرفين على الأقل)"),
+  phone: z.string().min(10, "رقم الهاتف غير صحيح"),
+  message: z.string().min(10, "الرسالة قصيرة جداً (10 أحرف على الأقل)"),
+});
+
+type ContactFormData = z.infer<typeof contactFormSchema>;
+
 function ContactFormSection() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -570,33 +660,31 @@ function ContactFormSection() {
   });
 
   const onSubmit = async (data: ContactFormData) => {
-    if (isSubmitting) return;
-    
     setIsSubmitting(true);
     
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "تم إرسال رسالتك بنجاح!",
-        description: "سنتواصل معك قريباً إن شاء الله.",
-      });
-      
-      form.reset();
-    } finally {
-      setIsSubmitting(false);
-    }
+    const whatsappMessage = `مرحباً، أنا ${data.name}%0Aرقمي: ${data.phone}%0A%0A${data.message}`;
+    const whatsappUrl = `https://wa.me/966${PHONE_NUMBER.slice(1)}?text=${whatsappMessage}`;
+    
+    window.open(whatsappUrl, '_blank');
+    
+    toast({
+      title: "تم إرسال رسالتك",
+      description: "سيتم فتح واتساب لإرسال رسالتك",
+    });
+    
+    form.reset();
+    setIsSubmitting(false);
   };
 
   return (
-    <section className="py-16 md:py-24 bg-background" data-testid="section-contact-form">
+    <section className="py-16 md:py-24 bg-background" data-testid="section-contact">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl md:text-4xl font-bold text-center mb-4 text-foreground" data-testid="text-contact-title">
-            اطلب خدمة الصيانة
+            تواصل معنا
           </h2>
           <p className="text-center text-muted-foreground mb-8">
-            أرسل لنا رسالتك وسنتواصل معك في أقرب وقت
+            أرسل لنا رسالة وسنرد عليك في أقرب وقت
           </p>
 
           <Card className="p-6 md:p-8 border-none shadow-lg">
@@ -609,11 +697,7 @@ function ContactFormSection() {
                     <FormItem>
                       <FormLabel>الاسم</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="أدخل اسمك الكريم"
-                          {...field}
-                          data-testid="input-name"
-                        />
+                        <Input placeholder="أدخل اسمك" {...field} data-testid="input-name" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -627,13 +711,7 @@ function ContactFormSection() {
                     <FormItem>
                       <FormLabel>رقم الهاتف</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="05XXXXXXXX"
-                          dir="ltr"
-                          className="text-left"
-                          {...field}
-                          data-testid="input-phone"
-                        />
+                        <Input placeholder="05xxxxxxxx" dir="ltr" {...field} data-testid="input-phone" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -645,13 +723,13 @@ function ContactFormSection() {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>تفاصيل المشكلة</FormLabel>
+                      <FormLabel>الرسالة</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="صف لنا مشكلة الغسالة..."
-                          className="min-h-[120px] resize-none"
+                          placeholder="اكتب مشكلة غسالتك هنا..."
+                          className="min-h-[120px]"
                           {...field}
-                          data-testid="input-message"
+                          data-testid="textarea-message"
                         />
                       </FormControl>
                       <FormMessage />
@@ -659,192 +737,81 @@ function ContactFormSection() {
                   )}
                 />
 
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full"
-                  disabled={isSubmitting}
-                  data-testid="button-submit-form"
-                >
-                  {isSubmitting ? (
-                    "جاري الإرسال..."
-                  ) : (
-                    <>
-                      <Send className="w-5 h-5 ml-2" />
-                      إرسال الطلب
-                    </>
-                  )}
-                </Button>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex-1 bg-primary text-primary-foreground"
+                    data-testid="button-submit-form"
+                  >
+                    <Send className="w-4 h-4 ml-2" />
+                    إرسال عبر واتساب
+                  </Button>
+                  <Button asChild size="default" variant="outline" data-testid="button-call-form">
+                    <a href={PHONE_LINK} className="flex items-center gap-2">
+                      <Phone className="w-4 h-4" />
+                      اتصل مباشرة
+                    </a>
+                  </Button>
+                </div>
               </form>
             </Form>
           </Card>
-
-          <div className="mt-8 text-center">
-            <p className="text-muted-foreground mb-4">أو تواصل معنا مباشرة:</p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button asChild variant="outline" size="lg" data-testid="button-call-form">
-                <a href={PHONE_LINK} className="flex items-center gap-2">
-                  <Phone className="w-5 h-5" />
-                  <span dir="ltr">{PHONE_NUMBER}</span>
-                </a>
-              </Button>
-              <Button asChild size="lg" className="bg-green-600 hover:bg-green-700" data-testid="button-whatsapp-form">
-                <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5" />
-                  واتساب
-                </a>
-              </Button>
-            </div>
-          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function ServiceAreaSection() {
-  const areas = [
-    "حي الروضة",
-    "حي النزهة",
-    "حي الصفا",
-    "حي الحمراء",
-    "حي السلامة",
-    "حي الرحاب",
-    "حي المحمدية",
-    "حي البساتين",
-    "حي الشرفية",
-    "حي الأندلس",
-    "حي الفيصلية",
-    "حي السليمانية",
-  ];
-
+function StickyContactButtons() {
   return (
-    <section className="py-16 md:py-24 bg-muted/30" data-testid="section-service-area">
-      <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-4xl font-bold text-center mb-4 text-foreground" data-testid="text-service-area-title">
-          مناطق الخدمة
-        </h2>
-        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-          نغطي جميع أحياء جدة وضواحيها
-        </p>
-
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-card rounded-xl shadow-lg p-8 border border-card-border">
-            <div className="flex items-center justify-center gap-3 mb-8">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <MapPin className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="text-xl md:text-2xl font-bold text-foreground">
-                جدة - المملكة العربية السعودية
-              </h3>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {areas.map((area, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg"
-                  data-testid={`area-item-${index}`}
-                >
-                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
-                  <span className="text-foreground text-sm">{area}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-8 text-center">
-              <p className="text-muted-foreground">
-                لا ترى منطقتك؟ اتصل بنا للتأكد من تغطية منطقتك
-              </p>
-              <Button asChild className="mt-4" data-testid="button-call-service-area">
-                <a href={PHONE_LINK} className="flex items-center gap-2">
-                  <Phone className="w-5 h-5" />
-                  <span dir="ltr">{PHONE_NUMBER}</span>
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FinalCTASection() {
-  return (
-    <section className="py-16 md:py-20 bg-gradient-to-l from-primary to-blue-600" data-testid="section-final-cta">
-      <div className="container mx-auto px-4 text-center">
-        <h2 className="text-2xl md:text-4xl font-bold text-white mb-4">
-          هل تحتاج لإصلاح غسالتك؟
-        </h2>
-        <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-          اتصل بنا الآن للحصول على خدمة سريعة وموثوقة. فنيون محترفون بخبرة أكثر من 10 سنوات.
-        </p>
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-t border-primary/30 p-3 safe-area-bottom" data-testid="sticky-contact-buttons">
+      <div className="container mx-auto flex gap-3 justify-center max-w-md">
         <Button
-          size="lg"
           asChild
-          className="bg-white text-primary hover:bg-white/90 text-xl px-10 py-7 font-bold shadow-xl"
-          data-testid="button-final-cta"
+          size="lg"
+          className="flex-1 bg-primary text-primary-foreground font-bold animate-pulse-glow"
+          data-testid="button-sticky-call"
         >
-          <a href={PHONE_LINK} className="flex items-center gap-3">
-            <Phone className="w-7 h-7" />
+          <a href={PHONE_LINK} className="flex items-center justify-center gap-2">
+            <Phone className="w-5 h-5" />
             <span>اتصل الآن</span>
-            <span dir="ltr">{PHONE_NUMBER}</span>
+          </a>
+        </Button>
+        <Button
+          asChild
+          size="lg"
+          className="flex-1 bg-green-600 text-white font-bold"
+          data-testid="button-sticky-whatsapp"
+        >
+          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+            <SiWhatsapp className="w-5 h-5" />
+            <span>واتساب</span>
           </a>
         </Button>
       </div>
-    </section>
-  );
-}
-
-function FloatingCallButton() {
-  return (
-    <a
-      href={PHONE_LINK}
-      className="fixed bottom-6 left-6 z-50 md:hidden flex items-center gap-2 bg-primary text-primary-foreground px-6 py-4 rounded-full shadow-2xl font-bold text-lg animate-pulse-glow hover:scale-105 transition-transform"
-      data-testid="button-floating-call"
-    >
-      <Phone className="w-6 h-6" />
-      <span>اتصل الآن</span>
-    </a>
-  );
-}
-
-function FloatingWhatsAppButton() {
-  return (
-    <a
-      href={WHATSAPP_LINK}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 hover:scale-105 transition-all"
-      data-testid="button-floating-whatsapp"
-    >
-      <MessageCircle className="w-7 h-7" />
-      <span className="hidden sm:inline font-bold">واتساب</span>
-    </a>
+    </div>
   );
 }
 
 export default function Home() {
   return (
-    <div className="min-h-screen" dir="rtl">
+    <div className="min-h-screen bg-background text-foreground" dir="rtl">
       <Header />
       <main>
         <HeroSection />
-        <AnimatedCountersSection />
+        <BrandLogosSection />
         <FeaturesSection />
         <ServicesSection />
+        <AnimatedCountersSection />
         <CTASection />
         <BrandsSection />
         <TestimonialsSection />
-        <ContactFormSection />
-        <ServiceAreaSection />
         <SEOContentSection />
-        <FinalCTASection />
+        <ContactFormSection />
       </main>
       <Footer />
-      <FloatingCallButton />
-      <FloatingWhatsAppButton />
+      <StickyContactButtons />
     </div>
   );
 }
